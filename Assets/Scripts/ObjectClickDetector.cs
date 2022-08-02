@@ -9,13 +9,13 @@ public class ObjectClickDetector : MonoBehaviour, IPointerDownHandler
 
         if (eventData.pointerId == -1)
         {
-            Debug.Log("Нажали на баллисту левой клавишей мыши");
+            Debug.Log("Нажали на " + eventData.pointerCurrentRaycast.gameObject.name + " левой клавишей мыши");
 
         }
 
         if (eventData.pointerId == -2)
         {
-            Debug.Log("Нажали на баллисту правой клавишей мыши");
+            Debug.Log("Нажали на " + eventData.pointerCurrentRaycast.gameObject.name + " правой клавишей мыши");
 
         }
     }
