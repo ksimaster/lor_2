@@ -13,7 +13,7 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
 
     void addPhysicsRaycaster()
     {
-        PhysicsRaycaster physicsRaycaster = GameObject.FindObjectOfType<PhysicsRaycaster>();
+        PhysicsRaycaster physicsRaycaster = Camera.main.GetComponent<PhysicsRaycaster>();// GameObject.FindObjectOfType<PhysicsRaycaster>();
         if (physicsRaycaster == null)
         {
             Camera.main.gameObject.AddComponent<PhysicsRaycaster>();
