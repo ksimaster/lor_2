@@ -27,8 +27,13 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
          if(eventData.pointerId == -1)
          {
              eventData.pointerCurrentRaycast.gameObject.GetComponent<MeshRenderer>().materials[1].color = detectorMaterial.color;
-             
-         }
+            //note x and y from tile
+            //eventData.pointerCurrentRaycast.gameObject.transform.position.x
+            PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
+            PlayerPrefs.SetFloat("targetPointZ", eventData.pointerCurrentRaycast.gameObject.transform.position.z);
+
+
+        }
 
         if (eventData.pointerId == -2)
         {
