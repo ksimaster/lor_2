@@ -4,9 +4,10 @@ using UnityEngine.Tilemaps;
 [CreateAssetMenu]
 public class PrefabTile : UnityEngine.Tilemaps.TileBase
 {
-    private readonly GameObject Prefab; //The gameobject to spawn
-    private readonly int X;
-    private readonly int Y;
+    public readonly GameObject Prefab; //The gameobject to spawn
+    public readonly int X;
+    public readonly int Y;
+
     public PrefabTile(GameObject prefab, int x, int y)
     {
         Prefab = prefab;
