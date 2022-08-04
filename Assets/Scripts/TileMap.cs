@@ -42,20 +42,23 @@ public class TileMap : MonoBehaviour
                         var prefab = new PrefabTile(village, x, y);
                         tilemap.SetTile(position, prefab);
                         villageManager.AddVillage(x, y);
-                        UpdateDict(prefab);
+                        var obj = tilemap.GetInstantiatedObject(position);
+                        UpdateDict(obj, x, y);
                     }
                     else
                     {
                         var prefab = new PrefabTile(ground, x, y);
                         tilemap.SetTile(position, prefab);
-                        UpdateDict(prefab);
+                        var obj = tilemap.GetInstantiatedObject(position);
+                        UpdateDict(obj, x, y);
                     }
                 }
                 else
                 {
                     var prefab = new PrefabTile(water, x, y);
                     tilemap.SetTile(position, prefab);
-                    UpdateDict(prefab);
+                    var obj = tilemap.GetInstantiatedObject(position);
+                    UpdateDict(obj, x, y);
                 }
 
                 // ((PrefabTile)tilemap.GetTile(position)).name = $"tile_{x}_{y}";
@@ -93,15 +96,13 @@ public class TileMap : MonoBehaviour
         return tilesCache[x][y];
     }
 
-    private void UpdateDict(PrefabTile prefabTile)
+    private void UpdateDict(GameObject objectInstance, int x, int y)
     {
-        int x = prefabTile.X;
-        int y = prefabTile.Y;
         if (!tilesCache.ContainsKey(x))
         {
             tilesCache.Add(x, new Dictionary<int, GameObject>());
         }
 
-        tilesCache[x].Add(y, prefabTile.Prefab);
+        tilesCache[x].Add(y, objectInstance);
     }
 }

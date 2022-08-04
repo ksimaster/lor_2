@@ -32,7 +32,7 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
             Debug.Log(tileMapPosition);
             var tileMap = go.GetComponentInParent<TileMap>();
             var neighbors = tileMap.GetNeighbors(tileMapPosition.x, tileMapPosition.y);
-            // neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[1].color = detectorMaterial.color);
+            neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[1].color = detectorMaterial.color);
             //note x and y from tile
             //eventData.pointerCurrentRaycast.gameObject.transform.position.x
             PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);

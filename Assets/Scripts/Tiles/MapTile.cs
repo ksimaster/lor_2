@@ -24,11 +24,11 @@ namespace Assets.Scripts.Village
 
         public static List<int[]> Neighborhoods(int x, int y)
         {
-            int offset = x % 2 == 1 ? 0 : 1;
+            int offset = y % 2 == 1 ? 1 : 0;
             return new List<int[]>
             {
-                new int[] { x + offset, y + 1 },
-                new int[] { x - 1 + offset, y + 1 },
+                new int[] { x + offset, y - 1 },
+                new int[] { x - 1 + offset, y - 1 },
                 new int[] { x - 1, y },
                 new int[] { x + 1, y },
                 new int[] {x + offset, y + 1 },
