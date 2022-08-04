@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CamController : MonoBehaviour
 {
-    public float speedCam; 
+    public float speedCam;
+    public float sensitivityMouseWeel;
     void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.W))
@@ -23,11 +24,11 @@ public class CamController : MonoBehaviour
         {
             gameObject.transform.position += new Vector3(-speedCam, 0, 0);
         }
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Q)|| Input.GetAxis("Mouse ScrollWheel") > sensitivityMouseWeel)
         {
             gameObject.transform.position += new Vector3(0, -speedCam, 0);
         }
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.E) || Input.GetAxis("Mouse ScrollWheel") < -sensitivityMouseWeel)
         {
             gameObject.transform.position += new Vector3(0, speedCam, 0);
         }
