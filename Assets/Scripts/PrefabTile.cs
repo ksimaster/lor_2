@@ -23,7 +23,7 @@ public class PrefabTile : UnityEngine.Tilemaps.TileBase
     public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject go)
     {
         go.transform.position += Vector3.up * 0.5f + Vector3.right * 0.5f;
-        go.transform.rotation = Quaternion.Euler(90, 0, 90);
+        go.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         return true;
     }
