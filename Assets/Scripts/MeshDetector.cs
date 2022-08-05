@@ -27,12 +27,12 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
          if(eventData.pointerId == -1)
          {
             var go = eventData.pointerCurrentRaycast.gameObject;
-            eventData.pointerCurrentRaycast.gameObject.GetComponent<MeshRenderer>().materials[1].color = detectorMaterial.color;
+            eventData.pointerCurrentRaycast.gameObject.GetComponent<MeshRenderer>().materials[0].color = detectorMaterial.color;
             var tileMapPosition = go.GetComponentInParent<GridLayout>().WorldToCell(eventData.pointerCurrentRaycast.gameObject.transform.position);
             Debug.Log(tileMapPosition);
             var tileMap = go.GetComponentInParent<TileMap>();
             var neighbors = tileMap.GetNeighbors(tileMapPosition.x, tileMapPosition.y);
-            neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[1].color = detectorMaterial.color);
+            neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[0].color = detectorMaterial.color);
             //note x and y from tile
             //eventData.pointerCurrentRaycast.gameObject.transform.position.x
             PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
@@ -41,7 +41,7 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
 
         if (eventData.pointerId == -2)
         {
-            eventData.pointerCurrentRaycast.gameObject.GetComponent<MeshRenderer>().materials[1].color = defaultMaterial.color;
+            eventData.pointerCurrentRaycast.gameObject.GetComponent<MeshRenderer>().materials[0].color = defaultMaterial.color;
         }
     }
 }
