@@ -13,9 +13,13 @@ public class TileMap : MonoBehaviour
     private VillagesManager villageManager = new VillagesManager();
     private Dictionary<int, Dictionary<int, GameObject>> tilesCache = new Dictionary<int, Dictionary<int, GameObject>>();
 
-    void Start()
+    private void Awake()
     {
         SetTiles();
+    }
+    void Start()
+    {
+        
     }
 
     void Update()
