@@ -1,4 +1,4 @@
-using Assets.Scripts.Village;
+using Assets.Scripts.Tiles;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -6,16 +6,24 @@ using UnityEngine.Tilemaps;
 public class TileMap : MonoBehaviour
 {
     private const int VillageRate = 10;
+    private const int WindmillRate = 20;
+    private const int SingleForestRate = 40;
+    private const int ForestRate = 10;
     public GameObject ground;
     public GameObject water;
     public GameObject village;
+    public GameObject windmill;
+    public GameObject castle;
+    public GameObject forest;
+
     public Tilemap tilemap;
-    private VillagesManager villageManager = new VillagesManager();
+    private BuildingsManager villageManager = new BuildingsManager();
     private Dictionary<int, Dictionary<int, GameObject>> tilesCache = new Dictionary<int, Dictionary<int, GameObject>>();
+    private readonly System.Random Random = new System.Random();
 
     private void Awake()
     {
-        SetTiles();
+        CreateTiles();
     }
     void Start()
     {
@@ -27,10 +35,8 @@ public class TileMap : MonoBehaviour
 
     }
 
-    public void SetTiles()
+    public void CreateTiles()
     {
-        var random = new System.Random();
-
         Vector2Int size = new Vector2Int(32, 32);
         float seed = Time.realtimeSinceStartup;
         for (int x = 0; x < size.x; x++)
@@ -38,27 +44,13 @@ public class TileMap : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 float sample = Mathf.PerlinNoise(seed * 999 + (float)x / 4, (float)y / 4);
-                var position = new Vector3Int(x, y, 0);
                 if (sample > 0.3)
                 {
-                    if (random.Next(0, VillageRate) == 0 && villageManager.CheckVillage(x, y))
-                    {
-                        var prefab = new PrefabTile(village, x, y);
-                        tilemap.SetTile(position, prefab);
-                        villageManager.AddVillage(x, y);
-                        var obj = tilemap.GetInstantiatedObject(position);
-                        UpdateDict(obj, x, y);
-                    }
-                    else
-                    {
-                        var prefab = new PrefabTile(ground, x, y);
-                        tilemap.SetTile(position, prefab);
-                        var obj = tilemap.GetInstantiatedObject(position);
-                        UpdateDict(obj, x, y);
-                    }
+                    CreateMovableTile(x, y);
                 }
                 else
                 {
+                    var position = new Vector3Int(x, y, 0);
                     var prefab = new PrefabTile(water, x, y);
                     tilemap.SetTile(position, prefab);
                     var obj = tilemap.GetInstantiatedObject(position);
@@ -84,6 +76,44 @@ public class TileMap : MonoBehaviour
         }
 
         return result;
+    }
+
+    private void CreateMovableTile(int x, int y)
+    {
+        var position = new Vector3Int(x, y, 0);
+        var isForestNear = villageManager.CheckForest(x, y);
+        if (Random.Next(0, VillageRate) == 0 && villageManager.CheckVillage(x, y))
+        {
+            var prefab = new PrefabTile(village, x, y);
+            tilemap.SetTile(position, prefab);
+            villageManager.AddVillage(x, y);
+            var obj = tilemap.GetInstantiatedObject(position);
+            UpdateDict(obj, x, y);
+        }
+        else if (Random.Next(0, WindmillRate) == 0 && villageManager.CheckWindmill(x, y))
+        {
+            var prefab = new PrefabTile(windmill, x, y);
+            tilemap.SetTile(position, prefab);
+            villageManager.AddWindmill(x, y);
+            var obj = tilemap.GetInstantiatedObject(position);
+            UpdateDict(obj, x, y);
+        }
+        else if (isForestNear && Random.Next(0, ForestRate) == 0
+            || Random.Next(0, SingleForestRate) == 0)
+        {
+            var prefab = new PrefabTile(forest, x, y);
+            tilemap.SetTile(position, prefab);
+            villageManager.AddSmallForest(x, y);
+            var obj = tilemap.GetInstantiatedObject(position);
+            UpdateDict(obj, x, y);
+        }
+        else
+        {
+            var prefab = new PrefabTile(ground, x, y);
+            tilemap.SetTile(position, prefab);
+            var obj = tilemap.GetInstantiatedObject(position);
+            UpdateDict(obj, x, y);
+        }
     }
     private GameObject GetTileByXY(int x, int y)
     {

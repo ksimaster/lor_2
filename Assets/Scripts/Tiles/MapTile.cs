@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Village
+namespace Assets.Scripts.Tiles
 {
     public class MapTile
     {
