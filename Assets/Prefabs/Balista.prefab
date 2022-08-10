@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7958082726089453961}
   - component: {fileID: 7958082726089453960}
   - component: {fileID: 7958082726089453967}
+  - component: {fileID: 1117275950592358455}
   m_Layer: 0
   m_Name: Balista
   m_TagString: Untagged
@@ -78,6 +79,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedMove: 0.3
+--- !u!114 &1117275950592358455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958082726089453966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e0c2c2889d28942b3b7ada8e77102d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorTexture: {fileID: 0}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!1001 &36526442208363559
 PrefabInstance:
   m_ObjectHideFlags: 0

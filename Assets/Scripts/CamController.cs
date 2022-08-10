@@ -24,13 +24,21 @@ public class CamController : MonoBehaviour
         {
             gameObject.transform.position += new Vector3(-speedCam, 0, 0);
         }
-        if (Input.GetKey(KeyCode.Q)|| Input.GetAxis("Mouse ScrollWheel") > sensitivityMouseWeel)
+        if (Input.GetKey(KeyCode.Q))
         {
             gameObject.transform.position += new Vector3(0, -speedCam, 0);
         }
-        if (Input.GetKey(KeyCode.E) || Input.GetAxis("Mouse ScrollWheel") < -sensitivityMouseWeel)
+        if (Input.GetKey(KeyCode.E))
         {
             gameObject.transform.position += new Vector3(0, speedCam, 0);
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") > sensitivityMouseWeel)
+        {
+            gameObject.transform.position += new Vector3(0, -speedCam/sensitivityMouseWeel, 0);
+        }
+        if (Input.GetAxis("Mouse ScrollWheel") < -sensitivityMouseWeel)
+        {
+            gameObject.transform.position += new Vector3(0, speedCam/sensitivityMouseWeel, 0);
         }
     }
 }
