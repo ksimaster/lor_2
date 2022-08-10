@@ -633,7 +633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ground: {fileID: 2450919949353038328, guid: 8721b51d86653494aadf13c9c8287174, type: 3}
   water: {fileID: 5851544232416828788, guid: 58474e76bf48c03489d870d3e81559bc, type: 3}
-  village: {fileID: 5945720210189512954, guid: 306264c93fc73fc4fb191b223aff5fb7, type: 3}
+  village: {fileID: 4269993491680236685, guid: 09952a7fa0feb874794498b415b460a7, type: 3}
   tilemap: {fileID: 1423980829}
 --- !u!1001 &7958082725354209612
 PrefabInstance:
