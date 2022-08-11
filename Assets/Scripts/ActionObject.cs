@@ -33,7 +33,7 @@ public class ActionObject: MonoBehaviour
             targetPoint = new Vector3(PlayerPrefs.GetFloat("targetPointX"), gameObject.transform.position.y, PlayerPrefs.GetFloat("targetPointZ"));
             
         }
-        if (gameObject.transform.position != targetPoint)
+        if (gameObject.transform.position != targetPoint && Mathf.Abs(gameObject.transform.position.x - targetPoint.x) > 0.1 && Mathf.Abs(gameObject.transform.position.z - targetPoint.z) > 0.1)
         {
 
             gameObject.transform.LookAt(targetPoint);
@@ -41,7 +41,12 @@ public class ActionObject: MonoBehaviour
             anim.SetBool("Move", isMove);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPoint, speedMove * Time.deltaTime);
         }
-        if (gameObject.transform.position == targetPoint) isMove = false;
+        if (gameObject.transform.position == targetPoint || Mathf.Abs(gameObject.transform.position.x - targetPoint.x) <= 0.1 || Mathf.Abs(gameObject.transform.position.z - targetPoint.z) <= 0.1)
+        {
+            isMove = false;
+            anim.SetBool("Move", isMove);
+        }
+        
     }
 
     public void Attack()
