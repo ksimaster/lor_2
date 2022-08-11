@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveToTile : MonoBehaviour
+public class ActionObject: MonoBehaviour
 {
     public float speedMove;
-
-
+    public Animator anim;
+    private bool isMove;
     private Vector3 objectPoint;
     private Vector3 targetPoint;
 
@@ -35,9 +35,26 @@ public class MoveToTile : MonoBehaviour
         }
         if (gameObject.transform.position != targetPoint)
         {
+
             gameObject.transform.LookAt(targetPoint);
+            isMove = true;
+            anim.SetBool("Move", isMove);
             gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, targetPoint, speedMove * Time.deltaTime);
-        }  
+        }
+        if (gameObject.transform.position == targetPoint) isMove = false;
+    }
+
+    public void Attack()
+    {
+        anim.SetTrigger("Attack");
+    }
+    public void Damage()
+    {
+        anim.SetTrigger("Damage");
+    }
+    public void Die()
+    {
+        anim.SetTrigger("Die");
     }
 
 

@@ -765,6 +765,11 @@ MonoBehaviour:
   detectorMaterial: {fileID: 2100000, guid: 54cdd14ff444ea544b218370c2149d0c, type: 2}
   defaultMaterial: {fileID: 2100000, guid: 17fe428354434744c9ea08c172c82560, type: 2}
   map: {fileID: 1423980826}
+--- !u!95 &1535846818 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7958082724937180130, guid: e048dc2d7024c894f85d02cf8a248d0b, type: 3}
+  m_PrefabInstance: {fileID: 7958082725354209612}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1685227845
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,5 +1002,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Balista
       objectReference: {fileID: 0}
+    - target: {fileID: 7958082726089453967, guid: e048dc2d7024c894f85d02cf8a248d0b, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 1535846818}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e048dc2d7024c894f85d02cf8a248d0b, type: 3}
