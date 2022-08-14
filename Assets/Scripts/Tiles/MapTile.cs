@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Assets.Scripts.Tiles
 {
@@ -13,6 +12,16 @@ namespace Assets.Scripts.Tiles
         {
             X = x;
             Y = y;
+        }
+
+        public override int GetHashCode()
+        {
+            return X + Y * 1009;
+        }
+
+        public override bool Equals(object other)
+        {
+            return other != null && other is MapTile mapTileOther && X == mapTileOther.X && Y == mapTileOther.Y;
         }
 
         public static List<int[]> Neighborhoods(MapTile tile)

@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using Assets.Scripts.Tiles;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,11 @@ public class TileMap : MonoBehaviour
     public GameObject forest;
 
     public Tilemap tilemap;
+    public List<MapTile> availableTiles = new List<MapTile>();
+    public GameState GameState;
+
     private BuildingsManager villageManager = new BuildingsManager();
-    private Dictionary<int, Dictionary<int, GameObject>> tilesCache = new Dictionary<int, Dictionary<int, GameObject>>();
+    private Dictionary<MapTile, Assets.Scripts.Tiles.Tile> tilesCache = new Dictionary<MapTile, Assets.Scripts.Tiles.Tile>();
     private readonly System.Random Random = new System.Random();
 
     private void Awake()
@@ -37,29 +41,39 @@ public class TileMap : MonoBehaviour
 
     public void CreateTiles()
     {
-        Vector2Int size = new Vector2Int(32, 32);
-        float seed = Time.realtimeSinceStartup;
+        var size = new Vector2Int(32, 32);
+        var seed = Time.realtimeSinceStartup;
+        var objCache = new Dictionary<MapTile, GameObject>();
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
             {
+                var position = new Vector3Int(x, y, 0);
                 float sample = Mathf.PerlinNoise(seed * 999 + (float)x / 4, (float)y / 4);
                 if (sample > 0.3)
                 {
                     CreateMovableTile(x, y);
+                    var mapTile = new MapTile(x, y);
+                    availableTiles.Add(mapTile);
+                    objCache.Add(mapTile, tilemap.GetInstantiatedObject(position));
                 }
                 else
                 {
-                    var position = new Vector3Int(x, y, 0);
                     var prefab = new PrefabTile(water, x, y);
                     tilemap.SetTile(position, prefab);
-                    var obj = tilemap.GetInstantiatedObject(position);
-                    UpdateDict(obj, x, y);
                 }
 
-                // ((PrefabTile)tilemap.GetTile(position)).name = $"tile_{x}_{y}";
             }
         }
+
+        GameState = new GameState(availableTiles.ToArray());
+
+        foreach(var kvpair in objCache)
+        {
+            var mapTile = kvpair.Key;
+            UpdateDict(mapTile, kvpair.Value);
+        }
+        Debug.Log("Prepared");
     }
 
     public List<GameObject> GetNeighbors(int x, int y)
@@ -71,7 +85,7 @@ public class TileMap : MonoBehaviour
             var tileGO = GetTileByXY(neighbor[0], neighbor[1]);
             if (tileGO != null)
             {
-                result.Add(tileGO);
+                result.Add(tileGO.TileObject);
             }
         }
 
@@ -87,16 +101,12 @@ public class TileMap : MonoBehaviour
             var prefab = new PrefabTile(village, x, y);
             tilemap.SetTile(position, prefab);
             villageManager.AddVillage(x, y);
-            var obj = tilemap.GetInstantiatedObject(position);
-            UpdateDict(obj, x, y);
         }
         else if (Random.Next(0, WindmillRate) == 0 && villageManager.CheckWindmill(x, y))
         {
             var prefab = new PrefabTile(windmill, x, y);
             tilemap.SetTile(position, prefab);
             villageManager.AddWindmill(x, y);
-            var obj = tilemap.GetInstantiatedObject(position);
-            UpdateDict(obj, x, y);
         }
         else if (isForestNear && Random.Next(0, ForestRate) == 0
             || Random.Next(0, SingleForestRate) == 0)
@@ -104,39 +114,33 @@ public class TileMap : MonoBehaviour
             var prefab = new PrefabTile(forest, x, y);
             tilemap.SetTile(position, prefab);
             villageManager.AddSmallForest(x, y);
-            var obj = tilemap.GetInstantiatedObject(position);
-            UpdateDict(obj, x, y);
         }
         else
         {
             var prefab = new PrefabTile(ground, x, y);
             tilemap.SetTile(position, prefab);
-            var obj = tilemap.GetInstantiatedObject(position);
-            UpdateDict(obj, x, y);
         }
     }
-    private GameObject GetTileByXY(int x, int y)
+
+    public Assets.Scripts.Tiles.Tile GetTileByXY(int x, int y)
     {
-        if (!tilesCache.ContainsKey(x))
+        var tempMapTile = new MapTile(x, y);
+        if (!tilesCache.ContainsKey(tempMapTile))
         {
             return null;
         }
 
-        if (!tilesCache[x].ContainsKey(y))
-        {
-            return null;
-        }
-
-        return tilesCache[x][y];
+        return tilesCache[tempMapTile];
     }
 
-    private void UpdateDict(GameObject objectInstance, int x, int y)
+    private void UpdateDict(MapTile mapTile, GameObject objectInstance)
     {
-        if (!tilesCache.ContainsKey(x))
+        var tile = new Assets.Scripts.Tiles.Tile(mapTile, GameState, objectInstance);
+        if (!tilesCache.ContainsKey(mapTile))
         {
-            tilesCache.Add(x, new Dictionary<int, GameObject>());
+            tilesCache.Add(mapTile, tile);
         }
 
-        tilesCache[x].Add(y, objectInstance);
+        tilesCache[mapTile] = tile;
     }
 }
