@@ -1,84 +1,14 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Tiles
 {
-    public class Tile
+    public class Tile: TileState
     {
-        public const string NeutralTileKey = "N";
-
-        public MapTile MapTile { get; }
-
         public GameObject TileObject { get; }
 
-        private GameState gameState;
-
-        public Tile(MapTile tile, GameState gameState, GameObject tileObject)
+        public Tile(MapTile mapTile, GameState gameState, GameObject tileObject) : base(mapTile, gameState)
         {
-            MapTile = tile;
-            this.gameState = gameState;
             TileObject = tileObject;
-        }
-
-        public void SetAreaId(string id) {
-            gameState.SetCellArea(MapTile, id);
-        }
-
-        public string GetAreaId() {
-            return gameState.GetCellArea(MapTile);
-        }
-
-        public UnitType GetUnitType() {
-            return gameState.GetCellUnit(MapTile);
-        }
-
-        public void SetUnitType(UnitType unit) {
-            gameState.SetCellUnit(MapTile, unit);
-        }
-
-        public bool isMilitia()
-        {
-            return GetUnitType() == UnitType.MILITIA;
-        }
-
-        public int GetMoves() {
-            return gameState.GetCellMoves(MapTile);
-        }
-
-        public void SetMoves(int moves) {
-            gameState.SetCellMoves(MapTile, moves);
-        }
-
-        public string GetPlayerId()
-        {
-            var parts = GetAreaId().Split('_');
-            if (parts.Length < 3)
-            {
-                return null;
-            }
-
-            return string.Join("_", parts.Take(2));
-        }
-
-        public static string AreaKey(string playerId, int areaNum) {
-            if (playerId == null) {
-              return NeutralTileKey;
-            }
-
-            return $"player_{playerId}_{ areaNum}";
-        }
-
-        public void Activate()
-        {
-            var unitType = GetUnitType();
-            if (GameConstants.MovableUnits.ContainsKey(unitType))
-            {
-                SetMoves(GameConstants.MovableUnits[unitType]);
-            }
-            else
-            {
-                SetMoves(0);
-            }
         }
     }
 }

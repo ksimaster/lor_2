@@ -29,6 +29,8 @@ namespace Assets.Scripts.Tiles
             return $"{X} {Y}";
         }
 
+        public List<int[]> Neighborhoods() => Neighborhoods(X, Y);
+
         public static List<int[]> Neighborhoods(MapTile tile)
         {
             int x = tile.X;

@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Tiles
 {
-    class BuildingsManager
+    class TreasureManager
     {
         private readonly List<Village> Villages = new List<Village>();
 
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Tiles
 
         private readonly int ForestRadius;
 
-        public BuildingsManager(int radius = 3, int forestRadius = 2)
+        public TreasureManager(int radius = 3, int forestRadius = 2)
         {
             Radius = radius;
             ForestRadius = forestRadius;

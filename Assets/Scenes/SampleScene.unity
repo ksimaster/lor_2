@@ -1642,6 +1642,7 @@ MonoBehaviour:
   windmill: {fileID: 8471360827307809581, guid: f18d72c756fdf7a4fa786baacac4484f, type: 3}
   castle: {fileID: 6244037953649230125, guid: ae933d1d3e6106f4c85d995e4ab38851, type: 3}
   forest: {fileID: 4956202935931930631, guid: e36f83ab27c770f4687caceb2decb762, type: 3}
+  balista: {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
   tilemap: {fileID: 1423980829}
 --- !u!1 &1831682114
 GameObject:

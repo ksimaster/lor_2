@@ -5,14 +5,17 @@ namespace Assets.Scripts
 {
     public class GameState
     {
+        private readonly Dictionary<MapTile, TreasureTileType> treasuresMap;
+
         private readonly Dictionary<MapTile, UnitType> unitsMap;
 
         private readonly Dictionary<MapTile, string> areasMap;
         
         private readonly Dictionary<MapTile, int> movesMap;
 
-        public GameState(MapTile[] availableTiles)
+        public GameState(MapTile[] availableTiles, Dictionary<MapTile, TreasureTileType> treasuresMap)
         {
+            this.treasuresMap = treasuresMap;
             this.unitsMap = new Dictionary<MapTile, UnitType>();
             this.areasMap = new Dictionary<MapTile, string>();
             this.movesMap = new Dictionary<MapTile, int>();
@@ -24,7 +27,6 @@ namespace Assets.Scripts
                 this.movesMap.Add(tile, 0);
             }
         }
-
 
         public void SetCellState(MapTile tile, UnitType unitType = UnitType.EMPTY, string areaId = Tile.NeutralTileKey, int moves = 0)
         {
@@ -41,6 +43,11 @@ namespace Assets.Scripts
         public void AddUnitTile(MapTile tile, UnitType unit, string areaId)
         {
             SetCellState(tile, unit, areaId);
+        }
+
+        public TreasureTileType GetTreasure(MapTile tile)
+        {
+            return treasuresMap.ContainsKey(tile) ? TreasureTileType.GRASS : treasuresMap[tile];
         }
 
         public UnitType GetCellUnit(MapTile tile) {

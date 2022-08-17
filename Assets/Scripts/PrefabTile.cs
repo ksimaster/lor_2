@@ -1,3 +1,4 @@
+using Assets.Scripts.Tiles;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -5,14 +6,13 @@ using UnityEngine.Tilemaps;
 public class PrefabTile : UnityEngine.Tilemaps.TileBase
 {
     public readonly GameObject Prefab; //The gameobject to spawn
-    public readonly int X;
+    public readonly MapTile MapTile;
     public readonly int Y;
 
-    public PrefabTile(GameObject prefab, int x, int y)
+    public PrefabTile(GameObject prefab, MapTile mapTile)
     {
         Prefab = prefab;
-        X = x;
-        Y = y;
+        MapTile = mapTile;
     }
 
     public override void GetTileData(Vector3Int position, ITilemap tilemap, ref TileData tileData)
