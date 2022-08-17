@@ -1,3 +1,5 @@
+using Assets.Scripts.Actions;
+using Assets.Scripts.Tiles;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -37,18 +39,20 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
          if(eventData.pointerId == -1)
          {
             var go = eventData.pointerCurrentRaycast.gameObject;
+
             foreach(GameObject tile in tiles)
             {
                 tile.transform.GetChild(2).gameObject.SetActive(false);
             }
             eventData.pointerCurrentRaycast.gameObject.transform.parent.GetChild(2).gameObject.SetActive(true);
             var tileMapPosition = go.GetComponentInParent<GridLayout>().WorldToCell(eventData.pointerCurrentRaycast.gameObject.transform.position);
-            Debug.Log(tileMapPosition);
             var tileMap = go.GetComponentInParent<TileMap>();
-            var neighbors = tileMap.GetNeighbors(tileMapPosition.x, tileMapPosition.y);
+            var tileTarget = tileMap.GetTileByXY(tileMapPosition.x, tileMapPosition.y);
+            ActionManager.TriggerEvent(new MoveActionData(tileTarget, tileTarget));
+
           //  neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[0].color = detectorMaterial.color); // заменить на выделение объектов
-            //note x and y from tile
-            //eventData.pointerCurrentRaycast.gameObject.transform.position.x
+          //note x and y from tile
+          //eventData.pointerCurrentRaycast.gameObject.transform.position.x
             PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
             PlayerPrefs.SetFloat("targetPointZ", eventData.pointerCurrentRaycast.gameObject.transform.position.z);
         }

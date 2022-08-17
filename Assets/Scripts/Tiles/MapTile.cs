@@ -24,6 +24,11 @@ namespace Assets.Scripts.Tiles
             return other != null && other is MapTile mapTileOther && X == mapTileOther.X && Y == mapTileOther.Y;
         }
 
+        public override string ToString()
+        {
+            return $"{X} {Y}";
+        }
+
         public static List<int[]> Neighborhoods(MapTile tile)
         {
             int x = tile.X;

@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using Assets.Scripts.Actions;
 using Assets.Scripts.Tiles;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,9 +30,17 @@ public class TileMap : MonoBehaviour
     {
         CreateTiles();
     }
+
     void Start()
     {
-        
+        ActionManager.AddListener<EndOfTurnActionData>((voidData) => Debug.Log("End of turn"));
+        ActionManager.TriggerEvent(new EndOfTurnActionData());
+
+        ActionManager.AddListener<MoveActionData>((data) => Debug.Log($"{data.UnitTile.MapTile}, {data.TargetTile.MapTile}"));
+        ActionManager.TriggerEvent(new MoveActionData(tilesCache[availableTiles[5]], tilesCache[availableTiles[6]]));
+
+        ActionManager.AddListener<BuildActionData>((data) => Debug.Log(data));
+        ActionManager.TriggerEvent(new BuildActionData(tilesCache[availableTiles[5]], UnitType.MILITIA, "1"));
     }
 
     void Update()
