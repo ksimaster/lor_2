@@ -46,7 +46,7 @@ public class TileMap : MonoBehaviour
 
         ActionManager.AddListener<BuildActionData>((data) => {
             var mapTile = data.unitTile.MapTile;
-            var position = tilemap.CellToWorld(new Vector3Int(mapTile.X, mapTile.Y, 0));
+            var position = tilemap.CellToWorld(new Vector3Int(mapTile.X, mapTile.Y, 1));
             position.y = position.y + 1;
             var objectToBuild = data.unit switch
             {
