@@ -9,8 +9,6 @@ public class Settings : MonoBehaviour
     {
     }
 
-
-
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);

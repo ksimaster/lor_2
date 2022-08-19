@@ -34,6 +34,8 @@ namespace Assets.Scripts
             return string.Join("_", Id.Split('_').Take(2));
         }
 
+        public static string GetAreaId(int PlayerId, int AreaId) => $"{Player.PlayerPreffix}_{PlayerId}_{AreaId}";
+
         public static List<MapTile> FindLargestArea(List<MapTile> tiles)
         {
             var areas = new List<List<string>>();

@@ -16,12 +16,22 @@ public class TileMap : MonoBehaviour
     public GameObject water;
     public GameObject village;
     public GameObject windmill;
-    public GameObject castle;
+    public GameObject[] units;
     public GameObject forest;
-    public GameObject balista;
 
-    public Tilemap tilemap;
+    public Tilemap Tilemap;
     public GameState GameState;
+    public GameLogic GameLogic;
+
+    // Privates
+    private GameObject castle;
+    private GameObject garden;
+    private GameObject tower;
+    private GameObject militia;
+    private GameObject swordmen;
+    private GameObject spearman;
+    private GameObject horseman;
+    private GameObject balista;
 
     private TreasureManager treasureManager = new TreasureManager();
     private Dictionary<MapTile, Assets.Scripts.Tiles.Tile> tilesCache = new Dictionary<MapTile, Assets.Scripts.Tiles.Tile>();
@@ -29,6 +39,14 @@ public class TileMap : MonoBehaviour
 
     private void Awake()
     {
+        castle = units[0];
+        garden = units[1];
+        tower = units[2];
+        militia = units[3];
+        swordmen = units[4];
+        spearman = units[5];
+        horseman = units[6];
+        balista = units[7];
         CreateTiles();
     }
 
@@ -46,18 +64,43 @@ public class TileMap : MonoBehaviour
 
         ActionManager.AddListener<BuildActionData>((data) => {
             var mapTile = data.unitTile.MapTile;
-            var position = tilemap.CellToWorld(new Vector3Int(mapTile.X, mapTile.Y, 1));
+            var position = Tilemap.CellToWorld(new Vector3Int(mapTile.X, mapTile.Y, 1));
             position.y = position.y + 1;
             var objectToBuild = data.unit switch
             {
                 UnitType.CASTLE => castle,
+                UnitType.GARDEN => garden,
+                UnitType.TOWER => tower,
+                UnitType.MILITIA => militia,
+                UnitType.SWORDSMAN => swordmen,
+                UnitType.SPEARMAN => spearman,
+                UnitType.HORSEMAN => horseman,
                 UnitType.BALISTA => balista,
                 _ => null
             };
 
+            // UI
             if (objectToBuild != null)
             {
-                Instantiate(objectToBuild, position, new Quaternion());
+                var unitObject = Instantiate(objectToBuild, position, new Quaternion());
+                tilesCache[mapTile].UnitObject = unitObject;
+            }
+
+            // Logic
+            if (objectToBuild != null)
+            {
+                var prevUnit = GameState.GetCellUnit(mapTile);
+                var tileToBuild = GameState.GetTileState(mapTile);
+
+                tileToBuild.SetUnitType(data.unit);
+                if (prevUnit == UnitType.EMPTY)
+                {
+                    tileToBuild.Activate();
+                }
+                else if (tileToBuild.GetMoves() == 1)
+                {
+                    tileToBuild.SetMoves(GameConstants.MovableUnits[data.unit]);
+                }
             }
         });
         
@@ -112,37 +155,51 @@ public class TileMap : MonoBehaviour
                 if (availableTiles.Contains(mapTile))
                 {
                     CreateMovableTile(mapTile, !treasuresMap.ContainsKey(mapTile) ? TreasureTileType.GRASS : treasuresMap[mapTile]);
-                    objCache.Add(mapTile, tilemap.GetInstantiatedObject(position));
+                    objCache.Add(mapTile, Tilemap.GetInstantiatedObject(position));
                 }
                 else
                 {
                     var prefab = new PrefabTile(water, mapTile);
-                    tilemap.SetTile(position, prefab);
+                    Tilemap.SetTile(position, prefab);
                 }
             }
         }
 
         GameState = new GameState(availableTiles.ToArray(), treasuresMap);
 
-        foreach(var kvpair in objCache)
+
+
+        foreach (var kvpair in objCache)
         {
             var mapTile = kvpair.Key;
             UpdateDict(mapTile, kvpair.Value);
         }
 
+        var castleTile = tilesCache[tilesCache.Keys.ToArray()[5]];
+        castleTile.SetUnitType(UnitType.CASTLE);
+        var neighbors = GetNeighbors(castleTile);
+        var areaId = Area.GetAreaId(0, 0);
+        castleTile.SetAreaId(areaId);
+        neighbors.ForEach(x => x.SetAreaId(areaId));
+
+        GameLogic = new GameLogic(this, new Player[] { new Player(0,0,this)});
+        GameLogic.RunNextTurn();
         Debug.Log("Prepared");
     }
 
-    public List<GameObject> GetNeighbors(int x, int y)
+    public List<Assets.Scripts.Tiles.Tile> GetNeighbors(Assets.Scripts.Tiles.Tile tile) =>
+        GetNeighbors(tile.MapTile.X, tile.MapTile.Y);
+
+    public List<Assets.Scripts.Tiles.Tile> GetNeighbors(int x, int y)
     {
-        var result = new List<GameObject>();
+        var result = new List<Assets.Scripts.Tiles.Tile>();
         var neighbors = MapTile.Neighborhoods(x, y);
-        foreach(var neighbor in neighbors)
+        foreach (var neighbor in neighbors)
         {
             var tileGO = GetTileByXY(neighbor[0], neighbor[1]);
             if (tileGO != null)
             {
-                result.Add(tileGO.TileObject);
+                result.Add(tileGO);
             }
         }
 
@@ -180,22 +237,22 @@ public class TileMap : MonoBehaviour
         if (treasure == TreasureTileType.VILLAGE)
         {
             var prefab = new PrefabTile(village, mapTile);
-            tilemap.SetTile(position, prefab);
+            Tilemap.SetTile(position, prefab);
         }
         else if (treasure == TreasureTileType.WINDMILL)
         {
             var prefab = new PrefabTile(windmill, mapTile);
-            tilemap.SetTile(position, prefab);
+            Tilemap.SetTile(position, prefab);
         }
         else if (treasure == TreasureTileType.SMALL_FOREST)
         {
             var prefab = new PrefabTile(forest, mapTile);
-            tilemap.SetTile(position, prefab);
+            Tilemap.SetTile(position, prefab);
         }
         else
         {
             var prefab = new PrefabTile(ground, mapTile);
-            tilemap.SetTile(position, prefab);
+            Tilemap.SetTile(position, prefab);
         }
     }
 

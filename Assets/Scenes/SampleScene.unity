@@ -1640,9 +1640,16 @@ MonoBehaviour:
   water: {fileID: 5851544232416828788, guid: 58474e76bf48c03489d870d3e81559bc, type: 3}
   village: {fileID: 4269993491680236685, guid: 09952a7fa0feb874794498b415b460a7, type: 3}
   windmill: {fileID: 8471360827307809581, guid: f18d72c756fdf7a4fa786baacac4484f, type: 3}
-  castle: {fileID: 6244037953649230125, guid: ae933d1d3e6106f4c85d995e4ab38851, type: 3}
+  units:
+  - {fileID: 6244037953649230125, guid: ae933d1d3e6106f4c85d995e4ab38851, type: 3}
+  - {fileID: 4956202935931930631, guid: e36f83ab27c770f4687caceb2decb762, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
+  - {fileID: 167964, guid: 100af27711b3f4d4ebc48689ce804635, type: 3}
   forest: {fileID: 4956202935931930631, guid: e36f83ab27c770f4687caceb2decb762, type: 3}
-  balista: {fileID: 7958082726089453966, guid: e048dc2d7024c894f85d02cf8a248d0b, type: 3}
   tilemap: {fileID: 1423980829}
 --- !u!1 &1831682114
 GameObject:

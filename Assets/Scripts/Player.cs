@@ -5,24 +5,31 @@ using System.Linq;
 
 namespace Assets.Scripts
 {
-    class Player
+    public class Player
     {
+        public const string PlayerPreffix = "player";
+
+        public readonly bool IsHuman;
+
         public int Color { get; }
+
         private int Id { get; }
 
         private TileMap TileMap { get; }
 
         private List<Area> Areas { get; set; }
 
-        public Player(int color, int id, TileMap tilemap, int money = GameConstants.StartingMoney)
+        public Player(int color, int id, TileMap tilemap, int money = GameConstants.StartingMoney, bool isHuman = false)
         {
             Color = color;
             Id = id;
             TileMap = tilemap;
-            var startingAreaId = $"player_{id}_{0}";
+            var startingAreaId = $"{PlayerPreffix}_{id}_{0}";
             Areas = new List<Area>() {
-                new Area(TileMap, startingAreaId, money, new Tiles.MapTile[0])
+                new Area(TileMap, startingAreaId, money, new MapTile[0])
             };
+
+            IsHuman = isHuman;
         }
 
         public Player CopyWithTileMap(TileMap tileMap)
@@ -34,10 +41,10 @@ namespace Assets.Scripts
 
         public string GetPlayerId()
         {
-            return $"player_{Id}";
+            return $"{PlayerPreffix}_{Id}";
         }
 
-        public bool isPlayerArea(string areaId)
+        public bool IsPlayerArea(string areaId)
         {
             var parts = areaId.Split('_');
             if (parts.Length == 3)
@@ -115,8 +122,7 @@ namespace Assets.Scripts
             }
         }
 
-
-        public void paySalaries()
+        public void PaySalaries()
         {
             foreach (var area in Areas)
             {
@@ -134,7 +140,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void killUnpaid()
+        public void KillUnpaid()
         {
             foreach (var area in Areas)
             {
@@ -189,7 +195,6 @@ namespace Assets.Scripts
 
             UpdateAreas();
         }
-
 
         public void SplitAreas(List<List<int>> splits, List<HashSet<Tile>> tileSets, string sourceAreaId)
         {
