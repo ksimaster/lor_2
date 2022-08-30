@@ -12,6 +12,9 @@ public class ActionObject: MonoBehaviour
     private Vector3 unitPoint;
     private Vector3 targetPoint;
 
+    public Material selectMaterial;
+    public Material targetMaterial;
+
     private void Start()
     {
         unitPoint = gameObject.transform.position;
@@ -77,9 +80,17 @@ public class ActionObject: MonoBehaviour
 
     public void ChooseTarget()
     {
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = targetMaterial.color;
 
     }
 
+    public void SelectObject()
+    {
+        gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        gameObject.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().materials[0].color = selectMaterial.color;
+        gameObject.transform.GetChild(1).gameObject.SetActive(true);
+    }
 
 
 
