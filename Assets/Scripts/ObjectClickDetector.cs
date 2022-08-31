@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Assets.Scripts.Actions;
 
 public class ObjectClickDetector : MonoBehaviour, IPointerDownHandler
 {
@@ -14,6 +15,7 @@ public class ObjectClickDetector : MonoBehaviour, IPointerDownHandler
             Debug.Log("Нажали на " + eventData.pointerCurrentRaycast.gameObject.name + " левой клавишей мыши");
             //note x and y from tile
             //eventData.pointerCurrentRaycast.gameObject.transform.position.x
+           // ActionManager.AddListener
             PlayerPrefs.SetFloat("objectPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
             PlayerPrefs.SetFloat("objectPointZ", eventData.pointerCurrentRaycast.gameObject.transform.position.z);
             gameObject.transform.GetChild(0).gameObject.SetActive(true);
