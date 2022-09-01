@@ -8,11 +8,13 @@ namespace Assets.Scripts.Actions
 
     public class SelectTargetActionData
     {
-        public readonly GameObject _selectGameObject;
+        public readonly float x;
+        public readonly float z;
 
-        public SelectTargetActionData(GameObject selectGameObject)
+        public SelectTargetActionData(float x, float z)
         {
-            _selectGameObject = selectGameObject;
+            this.x = x;
+            this.z = z;
         }
     }
 }

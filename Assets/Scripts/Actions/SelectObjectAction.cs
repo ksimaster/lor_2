@@ -8,11 +8,15 @@ namespace Assets.Scripts.Actions
 
     public class SelectObjectActionData
     {
-        public readonly GameObject _selectGameObject;
+        public readonly float x;
+        public readonly float z;
+        public readonly int id;
 
-        public SelectObjectActionData(GameObject selectGameObject)
+        public SelectObjectActionData(float x, float z, int id)
         {
-            _selectGameObject = selectGameObject;
+            this.x = x;
+            this.z = z;
+            this.id = id;
         }
     }
 }

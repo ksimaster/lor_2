@@ -50,11 +50,16 @@ public class MeshDetector : MonoBehaviour, IPointerDownHandler
             var tileTarget = tileMap.GetTileByXY(tileMapPosition.x, tileMapPosition.y);
             ActionManager.TriggerEvent(new MoveActionData(tileTarget, tileTarget));
 
-          //  neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[0].color = detectorMaterial.color); // заменить на выделение объектов
-          //note x and y from tile
-          //eventData.pointerCurrentRaycast.gameObject.transform.position.x
-            PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
-            PlayerPrefs.SetFloat("targetPointZ", eventData.pointerCurrentRaycast.gameObject.transform.position.z);
+
+            //  neighbors.ForEach(x => x.GetComponent<MeshRenderer>().materials[0].color = detectorMaterial.color); // заменить на выделение объектов
+            //note x and y from tile
+            //eventData.pointerCurrentRaycast.gameObject.transform.position.x
+            ActionManager.AddListener<SelectTargetActionData>((data) => {
+                Debug.Log($"Координаты выбранной цели: {data.x}, {data.z}");
+            });
+            ActionManager.TriggerEvent(new SelectTargetActionData(eventData.pointerCurrentRaycast.gameObject.transform.position.x, eventData.pointerCurrentRaycast.gameObject.transform.position.z));
+           // PlayerPrefs.SetFloat("targetPointX", eventData.pointerCurrentRaycast.gameObject.transform.position.x);
+            //PlayerPrefs.SetFloat("targetPointZ", eventData.pointerCurrentRaycast.gameObject.transform.position.z);
         }
 
         if (eventData.pointerId == -2)

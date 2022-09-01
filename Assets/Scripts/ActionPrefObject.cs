@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts.Actions;
 
-public class ActionObject: MonoBehaviour
+public class ActionPrefObject: MonoBehaviour
 {
     public float speedMove;
     public float timeToDeath;
@@ -12,7 +11,7 @@ public class ActionObject: MonoBehaviour
     private bool isMove;
     private Vector3 unitPoint;
     private Vector3 targetPoint;
-    private int idSelectObject;
+
     public Material selectMaterial;
     public Material targetMaterial;
 
@@ -20,35 +19,30 @@ public class ActionObject: MonoBehaviour
     {
         unitPoint = gameObject.transform.position;
         targetPoint = gameObject.transform.position;
-        Debug.Log(gameObject.transform.GetChild(2).gameObject.GetInstanceID());
+        PlayerPrefs.SetFloat("objectPointX", gameObject.transform.position.x);
+        PlayerPrefs.SetFloat("objectPointZ", gameObject.transform.position.z);
+        PlayerPrefs.SetFloat("targetPointX", gameObject.transform.position.x);
+        PlayerPrefs.SetFloat("targetPointZ", gameObject.transform.position.z);
+
     }
 
     void FixedUpdate()
     {
-        ActionManager.AddListener<SelectObjectActionData>((data) => {
-            unitPoint.x = data.x;
-            unitPoint.z = data.z;
-            idSelectObject = data.id;
-        });
-        if (gameObject.transform.GetChild(2).gameObject.GetInstanceID() == idSelectObject)
+        if (PlayerPrefs.HasKey("objectPointX") && PlayerPrefs.HasKey("objectPointZ")) 
         {
-            ActionManager.AddListener<SelectTargetActionData>((data) => {
-                targetPoint.x = data.x;
-                targetPoint.z = data.z;
-            });
+            unitPoint = new Vector3(PlayerPrefs.GetFloat("objectPointX"), gameObject.transform.position.y, PlayerPrefs.GetFloat("objectPointZ"));
+            
         }
-
-        //Debug.Log(gameObject.transform.GetChild(2).gameObject.GetInstanceID() == idSelectObject);
-
-        if (gameObject.transform.GetChild(2).gameObject.GetInstanceID() == idSelectObject
-          && gameObject.transform.position != targetPoint) 
+        if (PlayerPrefs.HasKey("targetPointX") && PlayerPrefs.HasKey("targetPointZ")) 
+        {
+            targetPoint = new Vector3(PlayerPrefs.GetFloat("targetPointX"), gameObject.transform.position.y, PlayerPrefs.GetFloat("targetPointZ"));
+            
+        }
+        if (gameObject.transform.position != targetPoint && Mathf.Abs(gameObject.transform.position.x - targetPoint.x) > coordinateAccuracy && Mathf.Abs(gameObject.transform.position.z - targetPoint.z) > coordinateAccuracy)
         {
             StartMove();
         }
-        if (
-            gameObject.transform.position == targetPoint 
-            || Mathf.Abs(gameObject.transform.position.x - targetPoint.x) <= coordinateAccuracy 
-            || Mathf.Abs(gameObject.transform.position.z - targetPoint.z) <= coordinateAccuracy)
+        if (gameObject.transform.position == targetPoint || Mathf.Abs(gameObject.transform.position.x - targetPoint.x) <= coordinateAccuracy || Mathf.Abs(gameObject.transform.position.z - targetPoint.z) <= coordinateAccuracy)
         {
             StopMove();
         }
@@ -81,7 +75,6 @@ public class ActionObject: MonoBehaviour
     {
         isMove = false;
         anim.SetBool("Move", isMove);
-        //ActionManager.TriggerEvent(new SelectTargetActionData(0, 0));
 
     }
 
